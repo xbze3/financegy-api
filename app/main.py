@@ -2,7 +2,12 @@ from fastapi import FastAPI
 from .routes import securities
 from .routes import sessions
 
-app = FastAPI(title="FinanceGY-API", root_path="/v1")
+app = FastAPI(
+    title="FinanceGY Market Data API",
+    description="Unofficial API for accessing financial data from the Guyana Stock Exchange (GSE).",
+    version="1.0.0",
+    root_path="/v1",
+)
 
 
 @app.get("/")
