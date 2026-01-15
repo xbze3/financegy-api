@@ -9,3 +9,5 @@ cache/
 .pypirc
 *.csv
 *.xlsx
+structure.txt
+requirements.txt
