@@ -1,7 +1,6 @@
 import financegy
 
 
-# Implemented
 def get_securities():
     securities = financegy.get_securities()
     return securities
