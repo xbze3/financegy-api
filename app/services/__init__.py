@@ -1,4 +1,4 @@
-from financegy_service import (
+from app.services.financegy_service import (
     get_securities,
     get_security_by_symbol,
     get_recent_trade,
