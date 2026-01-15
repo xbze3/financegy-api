@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from .routes import securities
+from .routes import sessions
 
 app = FastAPI(title="FinanceGY-API", root_path="/v1")
 
@@ -10,3 +11,4 @@ def root():
 
 
 app.include_router(securities.router)
+app.include_router(sessions.router)

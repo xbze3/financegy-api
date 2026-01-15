@@ -1,14 +1,142 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query, Path
 from app.services import financegy_service
 
-router = APIRouter(tags=["securities"])
+router = APIRouter(
+    tags=["securities"],
+)
 
 
-@router.get("/securities")
+@router.get(
+    "/securities",
+    summary="List all securities",
+    description=(
+        "Returns a list of all available securities.\n\n"
+        "Use this endpoint to populate dropdowns, autocomplete lists, or cached reference data."
+    ),
+)
 def get_securities():
     return financegy_service.get_securities()
 
 
-@router.get("/securities/{symbol}")
-def get_security_by_symbol(symbol: str):
+@router.get(
+    "/securities/search",
+    summary="Search securities by keyword",
+    description=(
+        "Search for securities using a free-text keyword.\n\n"
+        "Typical use-cases: autocomplete, symbol/name search, filtering lists."
+    ),
+)
+def search_securities(
+    q: str = Query(
+        ...,
+        min_length=1,
+        description="Search term (e.g., symbol, company name, or partial match).",
+        examples=["DDL", "Demerara", "Banks DIH"],
+    )
+):
+    return financegy_service.search_securities(q)
+
+
+@router.get(
+    "/securities/{symbol}/trades/latest",
+    summary="Get the latest trade for a security",
+    description="Returns the most recent trade record available for the provided security symbol.",
+)
+def get_recent_trade(
+    symbol: str = Path(
+        ...,
+        description="Security symbol (ticker).",
+        examples=["DDL", "DIH", "DTC"],
+    )
+):
+    return financegy_service.get_recent_trade(symbol)
+
+
+@router.get(
+    "/securities/{symbol}/trades",
+    summary="Get trades for a security in a specific year",
+    description=(
+        "Returns all trades for the provided security symbol for a given year.\n\n"
+        "Use this endpoint to build yearly trade tables or compute yearly summaries."
+    ),
+)
+def get_trades_for_year(
+    symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
+    y: str = Query(
+        ...,
+        description="Year (yyyy).",
+        min_length=4,
+        max_length=4,
+        examples=["2024", "2023"],
+    ),
+):
+    return financegy_service.get_trades_for_year(symbol, y)
+
+
+@router.get(
+    "/securities/{symbol}/trades/recent-year",
+    summary="Get trades for the most recent available year",
+    description=(
+        "Returns trades for the latest year available for the provided security symbol.\n\n"
+        "Useful when the client does not know which year is the most recent in the dataset."
+    ),
+)
+def get_security_recent_year(
+    symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"])
+):
+    return financegy_service.get_security_recent_year(symbol)
+
+
+@router.get(
+    "/securities/{symbol}/sessions/{session}/trades",
+    summary="Get trades for a security in a given trading session",
+    description=("Returns trades for a security filtered by a session ID."),
+)
+def get_security_session_trade(
+    symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
+    session: str = Path(
+        ...,
+        description="Trading session ID.",
+        examples=["1140", "1150", "1155"],
+    ),
+):
+    return financegy_service.get_security_session_trade(symbol, session)
+
+
+@router.get(
+    "/securities/{symbol}/trades/history",
+    summary="Get historical trades within a date range",
+    description=(
+        "Returns historical trades for a security between a start and end date.\n\n"
+        "Accepted date formats:\n"
+        "- `yyyy` (e.g., `2022`)\n"
+        "- `mm/yyyy` (e.g., `01/2022`)\n"
+        "- `dd/mm/yyyy` (e.g., `01/06/2020`)\n\n"
+        "Tip: Use query parameters so slashes in dates are handled safely."
+    ),
+)
+def get_historical_trades(
+    symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
+    start: str = Query(
+        ...,
+        description="Start date (`dd/mm/yyyy` or `mm/yyyy` or `yyyy`).",
+        examples=["01/06/2020", "01/2022", "2020"],
+    ),
+    end: str = Query(
+        ...,
+        description="End date (`dd/mm/yyyy` or `mm/yyyy` or `yyyy`).",
+        examples=["01/06/2024", "12/2024", "2024"],
+    ),
+):
+    return financegy_service.get_historical_trades(symbol, start, end)
+
+
+@router.get(
+    "/securities/{symbol}",
+    summary="Get security details by symbol",
+    description="Returns security metadata/details for the provided symbol (ticker).",
+)
+def get_security_by_symbol(
+    symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"])
+):
     return financegy_service.get_security_by_symbol(symbol)
