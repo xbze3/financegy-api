@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Path
 from app.services import financegy_service
+from app.schemas.sessions import SessionsOut
 
 router = APIRouter(
     tags=["sessions"],
@@ -13,6 +14,7 @@ router = APIRouter(
         "Returns all trades associated with a specific trading session.\n\n"
         "This endpoint is useful for session-level analysis, reconciliation, or reporting."
     ),
+    response_model=list[SessionsOut],
 )
 def get_session_trades(
     session: str = Path(

@@ -123,7 +123,7 @@ def get_security_session_trade(
         "- `dd/mm/yyyy` (e.g., `01/06/2020`)\n\n"
         "Tip: Use query parameters so slashes in dates are handled safely."
     ),
-    response_model=list[SessionsOut],
+    response_model=list[TradesOut],
 )
 def get_historical_trades(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
