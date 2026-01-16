@@ -2,7 +2,7 @@
 
 A production-style REST API built with **FastAPI** that exposes financial market data from the **Guyana Stock Exchange (GSE)**.
 
-This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an open-source Python library (also developed by me) that provides programmatic access to GSE securities, trade history, and session data. The API layer focuses on **clean REST design, validation, documentation, and deployment readiness**.
+This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an open-source Python library (also developed by me) that provides programmatic access to GSE securities, trade history, and session data. The API layer focuses on clean REST design, validation, documentation, and deployment readiness.
 
 ---
 
@@ -13,10 +13,10 @@ This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an 
 -   RESTful API built with FastAPI
 -   Powered by the `financegy` Python library
 -   OpenAPI / Swagger documentation
+-   Pydantic request & response models (typed API contracts)
 
 ### Planned / In Progress
 
--   Pydantic request & response models (typed API contracts)
 -   Centralized input validation and consistent error handling
 -   Rate limiting and caching at the API layer
 -   Dockerized setup for local development and production
@@ -148,7 +148,7 @@ http://localhost:8000
 
 -   [x] Core API endpoints
 -   [x] OpenAPI / Swagger documentation
--   [ ] Pydantic response models
+-   [x] Pydantic response models
 -   [ ] Centralized error handling
 -   [ ] Rate limiting and caching
 -   [ ] Docker support
