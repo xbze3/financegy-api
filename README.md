@@ -1,4 +1,4 @@
-# FinanceGY Market Data API
+# 🏦 FinanceGY Market Data API
 
 A production-style REST API built with **FastAPI** that exposes financial market data from the **Guyana Stock Exchange (GSE)**.
 
