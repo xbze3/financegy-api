@@ -5,4 +5,12 @@ class SecurityOut(BaseModel):
     symbol: str
     name: str
 
-    model_config = {"from_attributes": True}
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
+            "example": {
+                "symbol": "BDH",
+                "name": "Banks DIH Holdings Inc.",
+            }
+        },
+    }

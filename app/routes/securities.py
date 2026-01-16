@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Query, Path
 from app.services import financegy_service
 from app.schemas.securities import SecurityOut
-from app.schemas.trades import TradesOut
-from app.schemas.sessions import SessionsOut
+from app.schemas.trades import TradeOut
+from app.schemas.sessions import SessionOut
 
 router = APIRouter(
     tags=["securities"],
@@ -46,7 +46,7 @@ def search_securities(
     "/securities/{symbol}/trades/latest",
     summary="Get the latest trade for a security",
     description="Returns the most recent trade record available for the provided security symbol.",
-    response_model=TradesOut,
+    response_model=TradeOut,
 )
 def get_recent_trade(
     symbol: str = Path(
@@ -65,7 +65,7 @@ def get_recent_trade(
         "Returns all trades for the provided security symbol for a given year.\n\n"
         "Use this endpoint to build yearly trade tables or compute yearly summaries."
     ),
-    response_model=list[TradesOut],
+    response_model=list[TradeOut],
 )
 def get_trades_for_year(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
@@ -87,7 +87,7 @@ def get_trades_for_year(
         "Returns trades for the latest year available for the provided security symbol.\n\n"
         "Useful when the client does not know which year is the most recent in the dataset."
     ),
-    response_model=list[TradesOut],
+    response_model=list[TradeOut],
 )
 def get_security_recent_year(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"])
@@ -99,7 +99,7 @@ def get_security_recent_year(
     "/securities/{symbol}/sessions/{session}/trades",
     summary="Get trades for a security in a given trading session",
     description=("Returns trades for a security filtered by a session ID."),
-    response_model=SessionsOut,
+    response_model=SessionOut,
 )
 def get_security_session_trade(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
@@ -123,7 +123,7 @@ def get_security_session_trade(
         "- `dd/mm/yyyy` (e.g., `01/06/2020`)\n\n"
         "Tip: Use query parameters so slashes in dates are handled safely."
     ),
-    response_model=list[TradesOut],
+    response_model=list[TradeOut],
 )
 def get_historical_trades(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
