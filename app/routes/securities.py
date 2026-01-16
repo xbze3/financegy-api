@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query, Path
 from app.services import financegy_service
+from app.schemas.securities import SecurityOut
 
 router = APIRouter(
     tags=["securities"],
@@ -13,6 +14,7 @@ router = APIRouter(
         "Returns a list of all available securities.\n\n"
         "Use this endpoint to populate dropdowns, autocomplete lists, or cached reference data."
     ),
+    response_model=SecurityOut,
 )
 def get_securities():
     return financegy_service.get_securities()
