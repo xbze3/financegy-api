@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Query, Path
 from app.services import financegy_service
 from app.schemas.securities import SecurityOut
+from app.schemas.trades import TradesOut
+from app.schemas.sessions import SessionsOut
 
 router = APIRouter(
     tags=["securities"],
@@ -14,7 +16,7 @@ router = APIRouter(
         "Returns a list of all available securities.\n\n"
         "Use this endpoint to populate dropdowns, autocomplete lists, or cached reference data."
     ),
-    response_model=SecurityOut,
+    response_model=list[SecurityOut],
 )
 def get_securities():
     return financegy_service.get_securities()
@@ -27,6 +29,7 @@ def get_securities():
         "Search for securities using a free-text keyword.\n\n"
         "Typical use-cases: autocomplete, symbol/name search, filtering lists."
     ),
+    response_model=list[SecurityOut],
 )
 def search_securities(
     q: str = Query(
@@ -43,6 +46,7 @@ def search_securities(
     "/securities/{symbol}/trades/latest",
     summary="Get the latest trade for a security",
     description="Returns the most recent trade record available for the provided security symbol.",
+    response_model=TradesOut,
 )
 def get_recent_trade(
     symbol: str = Path(
@@ -61,6 +65,7 @@ def get_recent_trade(
         "Returns all trades for the provided security symbol for a given year.\n\n"
         "Use this endpoint to build yearly trade tables or compute yearly summaries."
     ),
+    response_model=list[TradesOut],
 )
 def get_trades_for_year(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
@@ -82,6 +87,7 @@ def get_trades_for_year(
         "Returns trades for the latest year available for the provided security symbol.\n\n"
         "Useful when the client does not know which year is the most recent in the dataset."
     ),
+    response_model=list[TradesOut],
 )
 def get_security_recent_year(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"])
@@ -93,6 +99,7 @@ def get_security_recent_year(
     "/securities/{symbol}/sessions/{session}/trades",
     summary="Get trades for a security in a given trading session",
     description=("Returns trades for a security filtered by a session ID."),
+    response_model=SessionsOut,
 )
 def get_security_session_trade(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
@@ -116,6 +123,7 @@ def get_security_session_trade(
         "- `dd/mm/yyyy` (e.g., `01/06/2020`)\n\n"
         "Tip: Use query parameters so slashes in dates are handled safely."
     ),
+    response_model=list[SessionsOut],
 )
 def get_historical_trades(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"]),
@@ -137,6 +145,7 @@ def get_historical_trades(
     "/securities/{symbol}",
     summary="Get security details by symbol",
     description="Returns security metadata/details for the provided symbol (ticker).",
+    response_model=SecurityOut,
 )
 def get_security_by_symbol(
     symbol: str = Path(..., description="Security symbol (ticker).", examples=["DDL"])
