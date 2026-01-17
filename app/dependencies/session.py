@@ -11,6 +11,17 @@ def get_session_id(
         examples=["1140", "1150", "1155"],
     )
 ) -> int:
+
+    earlist_session = 754
+
+    if int(session) < earlist_session:
+        raise DomainError(
+            code="SESSION_OUT_OF_RANGE",
+            message=f"Session cannot be earlier than session {earlist_session}",
+            status=400,
+            details={"session": session},
+        )
+
     if not session.isdigit():
         raise DomainError(
             code="INVALID_SESSION_FORMAT",
