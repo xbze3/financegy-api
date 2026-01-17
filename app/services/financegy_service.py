@@ -1,4 +1,5 @@
 import financegy
+from datetime import date
 
 
 def get_securities():
@@ -41,6 +42,16 @@ def get_trades_for_year(symbol: str, year: str):
     return year_trades
 
 
-def get_historical_trades(symbol: str, start_date: str, end_date: str):
-    historical_trades = financegy.get_historical_trades(symbol, start_date, end_date)
+from datetime import date
+
+
+def get_historical_trades(symbol: str, start_date: date, end_date: date):
+    start_date_str = start_date.strftime("%d/%m/%Y")
+    end_date_str = end_date.strftime("%d/%m/%Y")
+
+    historical_trades = financegy.get_historical_trades(
+        symbol,
+        start_date_str,
+        end_date_str,
+    )
     return historical_trades

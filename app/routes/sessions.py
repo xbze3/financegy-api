@@ -1,6 +1,8 @@
+from fastapi import Depends
 from fastapi import APIRouter, Path
 from app.services import financegy_service
 from app.schemas.sessions import SessionOut
+from app.dependencies.session import get_session_id
 
 router = APIRouter(
     tags=["sessions"],
@@ -16,11 +18,5 @@ router = APIRouter(
     ),
     response_model=list[SessionOut],
 )
-def get_session_trades(
-    session: str = Path(
-        ...,
-        description="Trading session ID.",
-        examples=["1140", "1150", "1155"],
-    )
-):
+def get_session_trades(session: str = Depends(get_session_id)):
     return financegy_service.get_session_trades(session)
