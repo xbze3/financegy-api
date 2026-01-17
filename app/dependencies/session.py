@@ -6,7 +6,7 @@ def get_session_id(
     session: str = Path(
         ...,
         min_length=3,
-        max_length=6,
+        max_length=4,
         description="Trading session ID.",
         examples=["1140", "1150", "1155"],
     )

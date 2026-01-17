@@ -10,17 +10,17 @@ This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an 
 
 ### Implemented
 
--   RESTful API built with FastAPI
--   Powered by the `financegy` Python library
--   OpenAPI / Swagger documentation
--   Pydantic request & response models (typed API contracts)
+- RESTful API built with FastAPI
+- Powered by the `financegy` Python library
+- OpenAPI / Swagger documentation
+- Pydantic request & response models (typed API contracts)
+- Centralized input validation and consistent error handling
 
 ### Planned / In Progress
 
--   Centralized input validation and consistent error handling
--   Rate limiting and caching at the API layer
--   Dockerized setup for local development and production
--   Cloud deployment (e.g. Render)
+- Rate limiting and caching at the API layer
+- Dockerized setup for local development and production
+- Cloud deployment (e.g. Render)
 
 ---
 
@@ -28,9 +28,9 @@ This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an 
 
 Once the API is running, interactive documentation is available at:
 
--   **Swagger UI:** `/docs`
--   **ReDoc:** `/redoc`
--   **OpenAPI Specification:** `/v1/openapi.json`
+- **Swagger UI:** `/docs`
+- **ReDoc:** `/redoc`
+- **OpenAPI Specification:** `/v1/openapi.json`
 
 These docs are auto-generated and always stay in sync with the codebase.
 
@@ -99,9 +99,9 @@ historical_trades = financegy.get_historical_trades(
 
 FinanceGY includes a lightweight local caching system to reduce unnecessary requests and improve performance.
 
--   Cached responses are stored as JSON files in a local `cache/` directory
--   Cache entries are valid for **7 days**
--   Cached data is returned instantly when available
+- Cached responses are stored as JSON files in a local `cache/` directory
+- Cache entries are valid for **7 days**
+- Cached data is returned instantly when available
 
 ### Clearing the Cache
 
@@ -146,13 +146,13 @@ http://localhost:8000
 
 ## Roadmap
 
--   [x] Core API endpoints
--   [x] OpenAPI / Swagger documentation
--   [x] Pydantic response models
--   [ ] Centralized error handling
--   [ ] Rate limiting and caching
--   [ ] Docker support
--   [ ] Cloud deployment (Render)
+- [x] Core API endpoints
+- [x] OpenAPI / Swagger documentation
+- [x] Pydantic response models
+- [x] Centralized error handling
+- [ ] Rate limiting and caching
+- [ ] Docker support
+- [ ] Cloud deployment (Render)
 
 ---
 
