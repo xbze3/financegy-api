@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class SecurityOut(BaseModel):
     symbol: str
-    name: str
+    name: str | None
 
     model_config = {
         "from_attributes": True,

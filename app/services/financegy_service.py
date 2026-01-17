@@ -1,5 +1,6 @@
 import financegy
 from datetime import date
+from typing import Optional
 
 
 def get_securities():
@@ -7,7 +8,7 @@ def get_securities():
     return securities
 
 
-def get_security_by_symbol(symbol: str):
+def get_security_by_symbol(symbol: str) -> Optional[str]:
     security_name = financegy.get_security_by_symbol(symbol)
     return security_name
 
@@ -42,16 +43,12 @@ def get_trades_for_year(symbol: str, year: str):
     return year_trades
 
 
-from datetime import date
-
-
 def get_historical_trades(symbol: str, start_date: date, end_date: date):
     start_date_str = start_date.strftime("%d/%m/%Y")
     end_date_str = end_date.strftime("%d/%m/%Y")
 
-    historical_trades = financegy.get_historical_trades(
+    return financegy.get_historical_trades(
         symbol,
         start_date_str,
         end_date_str,
     )
-    return historical_trades

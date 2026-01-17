@@ -1,4 +1,6 @@
 import uuid
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
@@ -6,6 +8,8 @@ from fastapi.exceptions import RequestValidationError
 from .routes import securities
 from .routes import sessions
 from .errors import DomainError, error_payload
+
+logger = logging.getLogger("financegy")
 
 app = FastAPI(
     title="FinanceGY Market Data API",
@@ -48,6 +52,21 @@ async def validation_error_handler(request: Request, exc: RequestValidationError
             message="Input validation failed",
             request_id=rid,
             details={"errors": exc.errors()},
+        ),
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    rid = getattr(request.state, "request_id", "unknown")
+    logger.exception("Unhandled error request_id=%s", rid)
+
+    return JSONResponse(
+        status_code=500,
+        content=error_payload(
+            code="INTERNAL_ERROR",
+            message="An unexpected error occurred",
+            request_id=rid,
         ),
     )
 

@@ -9,7 +9,8 @@ from app.dependencies.symbol import get_symbol
 from app.dependencies.year import get_year
 from app.dependencies.session import get_session_id
 from app.dependencies.date_range_flexible import get_date_range
-from datetime import date
+from app.dependencies.date_range_flexible import DateRange
+
 
 router = APIRouter(
     tags=["securities"],
@@ -109,10 +110,9 @@ def get_security_session_trade(
 )
 def get_historical_trades(
     symbol: str = Depends(get_symbol),
-    start: date = Depends(get_date_range),
-    end: date = Depends(get_date_range),
+    dr: DateRange = Depends(get_date_range),
 ):
-    return financegy_service.get_historical_trades(symbol, start, end)
+    return financegy_service.get_historical_trades(symbol, dr.start, dr.end)
 
 
 @router.get(
@@ -122,4 +122,5 @@ def get_historical_trades(
     response_model=SecurityOut,
 )
 def get_security_by_symbol(symbol: str = Depends(get_symbol)):
-    return financegy_service.get_security_by_symbol(symbol)
+    name = financegy_service.get_security_by_symbol(symbol)
+    return SecurityOut(symbol=symbol, name=name)
