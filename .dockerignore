@@ -24,3 +24,6 @@ env/
 # Tests & misc
 .pytest_cache/
 .mypy_cache/
+
+# Text Files
+localdev-compose.txt
