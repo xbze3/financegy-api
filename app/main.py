@@ -1,22 +1,34 @@
 import uuid
 import logging
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from .routes import securities
-from .routes import sessions
-from .errors import DomainError, error_payload
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.extension import _rate_limit_exceeded_handler
 
-logger = logging.getLogger("financegy")
+from app.infra.limiter import limiter
+from .routes import securities, sessions
+from .errors import DomainError, error_payload
 
 app = FastAPI(
     title="FinanceGY Market Data API",
     description="Unofficial API for accessing financial data from the Guyana Stock Exchange (GSE).",
-    version="1.0.0",
-    root_path="/v1",
+    version="1.0",
 )
+
+logger = logging.getLogger("financegy")
+
+app.state.limiter = limiter
+
+app.add_middleware(SlowAPIMiddleware)
+
+
+@app.exception_handler(RateLimitExceeded)
+def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return _rate_limit_exceeded_handler(request, exc)
 
 
 @app.middleware("http")
@@ -44,7 +56,6 @@ async def domain_error_handler(request: Request, exc: DomainError):
 @app.exception_handler(RequestValidationError)
 async def validation_error_handler(request: Request, exc: RequestValidationError):
     rid = getattr(request.state, "request_id", "unknown")
-
     return JSONResponse(
         status_code=422,
         content=error_payload(
@@ -60,7 +71,6 @@ async def validation_error_handler(request: Request, exc: RequestValidationError
 async def unhandled_exception_handler(request: Request, exc: Exception):
     rid = getattr(request.state, "request_id", "unknown")
     logger.exception("Unhandled error request_id=%s", rid)
-
     return JSONResponse(
         status_code=500,
         content=error_payload(
@@ -71,10 +81,15 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     )
 
 
-@app.get("/")
+v1 = APIRouter(prefix="/v1")
+
+
+@v1.get("/")
 def root():
     return {"status": "ok", "message": "Welcome to FinanceGY-API", "version": "v1"}
 
 
-app.include_router(securities.router)
-app.include_router(sessions.router)
+v1.include_router(securities.router)
+v1.include_router(sessions.router)
+
+app.include_router(v1)

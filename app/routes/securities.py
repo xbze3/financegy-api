@@ -1,5 +1,7 @@
 from fastapi import Depends
-from fastapi import APIRouter, Query, Path
+from fastapi import Request
+from fastapi import APIRouter
+from app.infra.limiter import limiter
 from app.services import financegy_service
 from app.schemas.securities import SecurityOut
 from app.schemas.trades import TradeOut
@@ -26,7 +28,8 @@ router = APIRouter(
     ),
     response_model=list[SecurityOut],
 )
-def get_securities():
+@limiter.limit("30/minute")
+def get_securities(request: Request):
     return financegy_service.get_securities()
 
 
@@ -39,7 +42,8 @@ def get_securities():
     ),
     response_model=list[SecurityOut],
 )
-def search_securities(q: str = Depends(get_search_query)):
+@limiter.limit("60/minute")
+def search_securities(request: Request, q: str = Depends(get_search_query)):
     return financegy_service.search_securities(q)
 
 
@@ -49,7 +53,8 @@ def search_securities(q: str = Depends(get_search_query)):
     description="Returns the most recent trade record available for the provided security symbol.",
     response_model=TradeOut,
 )
-def get_recent_trade(symbol: str = Depends(get_symbol)):
+@limiter.limit("60/minute")
+def get_recent_trade(request: Request, symbol: str = Depends(get_symbol)):
     return financegy_service.get_recent_trade(symbol)
 
 
@@ -62,7 +67,9 @@ def get_recent_trade(symbol: str = Depends(get_symbol)):
     ),
     response_model=list[TradeOut],
 )
+@limiter.limit("30/minute")
 def get_trades_for_year(
+    request: Request,
     symbol: str = Depends(get_symbol),
     y: str = Depends(get_year),
 ):
@@ -78,7 +85,8 @@ def get_trades_for_year(
     ),
     response_model=list[TradeOut],
 )
-def get_security_recent_year(symbol: str = Depends(get_symbol)):
+@limiter.limit("30/minute")
+def get_security_recent_year(request: Request, symbol: str = Depends(get_symbol)):
     return financegy_service.get_security_recent_year(symbol)
 
 
@@ -88,7 +96,9 @@ def get_security_recent_year(symbol: str = Depends(get_symbol)):
     description=("Returns trades for a security filtered by a session ID."),
     response_model=SessionOut,
 )
+@limiter.limit("60/minute")
 def get_security_session_trade(
+    request: Request,
     symbol: str = Depends(get_symbol),
     session: str = Depends(get_session_id),
 ):
@@ -108,7 +118,9 @@ def get_security_session_trade(
     ),
     response_model=list[TradeOut],
 )
+@limiter.limit("10/minute")
 def get_historical_trades(
+    request: Request,
     symbol: str = Depends(get_symbol),
     dr: DateRange = Depends(get_date_range),
 ):
@@ -121,6 +133,7 @@ def get_historical_trades(
     description="Returns security metadata/details for the provided symbol (ticker).",
     response_model=SecurityOut,
 )
-def get_security_by_symbol(symbol: str = Depends(get_symbol)):
+@limiter.limit("30/minute")
+def get_security_by_symbol(request: Request, symbol: str = Depends(get_symbol)):
     name = financegy_service.get_security_by_symbol(symbol)
     return SecurityOut(symbol=symbol, name=name)
