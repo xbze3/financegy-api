@@ -15,11 +15,12 @@ This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an 
 - OpenAPI / Swagger documentation
 - Pydantic request & response models (typed API contracts)
 - Centralized input validation and consistent error handling
+- API-level rate limiting (SlowAPI)
+- Dockerized local development environment
 
 ### Planned / In Progress
 
-- Rate limiting and caching at the API layer
-- Dockerized setup for local development and production
+- API-level caching (Redis when scaling becomes necessary)
 - Cloud deployment (e.g. Render)
 
 ---
@@ -32,7 +33,7 @@ Once the API is running, interactive documentation is available at:
 - **ReDoc:** `/redoc`
 - **OpenAPI Specification:** `/v1/openapi.json`
 
-These docs are auto-generated and always stay in sync with the codebase.
+These docs are auto-generated and always stay in sync with the codebase. Check them out for route descriptions and requirements.
 
 ---
 
@@ -130,17 +131,45 @@ The API acts as a clean HTTP interface on top of the FinanceGY library, making t
 
 ## Running Locally (Docker)
 
-> **Note:** Docker support is planned and will be added in a future iteration.
+The API can be run locally using **Docker Compose**, which automatically builds the image and binds ports for you.
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Start the API
 
 ```bash
 docker compose up --build
 ```
 
+For subsequent runs (no dependency or Dockerfile changes):
+
+```bash
+docker compose up
+```
+
 The API will be available at:
 
 ```
-http://localhost:8000
+http://localhost:8000/v1
 ```
+
+To stop the containers:
+
+```bash
+docker compose down
+```
+
+---
+
+## Rate Limiting
+
+This API uses **SlowAPI** to protect endpoints from abuse.
+
+- Strict per-route limits are applied to heavy or more sensitive endpoints (e.g. search, historical data)
+- Limits are currently enforced in-memory
 
 ---
 
@@ -150,8 +179,9 @@ http://localhost:8000
 - [x] OpenAPI / Swagger documentation
 - [x] Pydantic response models
 - [x] Centralized error handling
-- [ ] Rate limiting and caching
-- [ ] Docker support
+- [x] Rate limiting
+- [x] Docker support
+- [ ] API-level caching (Redis)
 - [ ] Cloud deployment (Render)
 
 ---
