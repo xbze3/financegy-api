@@ -22,7 +22,6 @@ app = FastAPI(
 logger = logging.getLogger("financegy")
 
 app.state.limiter = limiter
-
 app.add_middleware(SlowAPIMiddleware)
 
 
@@ -81,11 +80,27 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     )
 
 
+@app.get("/", tags=["default"])
+def root_index():
+    return {
+        "name": "FinanceGY Market Data API",
+        "status": "ok",
+        "docs": "/docs",
+        "redoc": "/redoc",
+        "api_base": "/v1",
+    }
+
+
+@app.get("/health", include_in_schema=False)
+def health():
+    return {"status": "ok"}
+
+
 v1 = APIRouter(prefix="/v1")
 
 
-@v1.get("/")
-def root():
+@v1.get("/", include_in_schema=False)
+def v1_root():
     return {"status": "ok", "message": "Welcome to FinanceGY-API", "version": "v1"}
 
 
