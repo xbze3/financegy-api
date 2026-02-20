@@ -1,6 +1,5 @@
 import financegy
 from datetime import date
-from typing import Optional
 
 
 def get_securities():
