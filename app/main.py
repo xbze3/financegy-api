@@ -10,13 +10,13 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi.extension import _rate_limit_exceeded_handler
 
 from app.infra.limiter import limiter
-from .routes import securities, sessions
+from .v1.routes import v1_securities, v1_sessions
 from .errors import DomainError, error_payload
 
 app = FastAPI(
     title="FinanceGY Market Data API",
     description="Unofficial API for accessing financial data from the Guyana Stock Exchange (GSE).",
-    version="1.0",
+    version="2.0",
 )
 
 logger = logging.getLogger("financegy")
@@ -87,7 +87,10 @@ def root_index():
         "status": "ok",
         "docs": "/docs",
         "redoc": "/redoc",
-        "api_base": "/v1",
+        "versions": {
+            "v1": {"status": "deprecated", "base": "/v1"},
+            "v2": {"status": "current", "base": "/v2"},
+        },
     }
 
 
@@ -95,6 +98,8 @@ def root_index():
 def health():
     return {"status": "ok"}
 
+
+# /v1 routes
 
 v1 = APIRouter(prefix="/v1")
 
@@ -104,7 +109,19 @@ def v1_root():
     return {"status": "ok", "message": "Welcome to FinanceGY-API", "version": "v1"}
 
 
-v1.include_router(securities.router)
-v1.include_router(sessions.router)
+v1.include_router(v1_securities.router)
+v1.include_router(v1_sessions.router)
 
 app.include_router(v1)
+
+# /v2 routes
+
+v2 = APIRouter(prefix="/v2")
+
+
+@v2.get("/", include_in_schema=False)
+def v2_root():
+    return {"status": "ok", "message": "Welcome to FinanceGY-API", "version": "v2"}
+
+
+app.include_router(v2)

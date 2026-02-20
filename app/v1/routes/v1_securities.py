@@ -2,10 +2,10 @@ from fastapi import Depends
 from fastapi import Request
 from fastapi import APIRouter
 from app.infra.limiter import limiter
-from app.services import financegy_service
-from app.schemas.securities import SecurityOut
-from app.schemas.trades import TradeOut
-from app.schemas.sessions import SessionOut
+from app.v1.services import financegy_service
+from app.v1.schemas.securities import SecurityOut
+from app.v1.schemas.trades import TradeOut
+from app.v1.schemas.sessions import SessionOut
 from app.dependencies.search import get_search_query
 from app.dependencies.symbol import get_symbol
 from app.dependencies.year import get_year

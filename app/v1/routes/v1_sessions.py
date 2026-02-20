@@ -2,8 +2,8 @@ from fastapi import Depends
 from fastapi import Request
 from fastapi import APIRouter
 from app.infra.limiter import limiter
-from app.services import financegy_service
-from app.schemas.sessions import SessionOut
+from app.v1.services import financegy_service
+from app.v1.schemas.sessions import SessionOut
 from app.dependencies.session import get_session_id
 
 router = APIRouter(
