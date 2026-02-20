@@ -8,6 +8,7 @@ from app.v1.services.financegy_service import (
     search_securities,
     get_trades_for_year,
     get_historical_trades,
+    clear_cache,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "search_securities",
     "get_trades_for_year",
     "get_historical_trades",
+    "clear_cache",
 ]

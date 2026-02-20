@@ -8,7 +8,7 @@ def get_securities():
     return securities
 
 
-def get_security_by_symbol(symbol: str) -> Optional[str]:
+def get_security_by_symbol(symbol: str):
     security_name = financegy.get_security_by_symbol(symbol)
     return security_name
 
@@ -52,3 +52,7 @@ def get_historical_trades(symbol: str, start_date: date, end_date: date):
         start_date_str,
         end_date_str,
     )
+
+
+def clear_cache():
+    return financegy.clear_cache()

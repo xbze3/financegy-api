@@ -6,6 +6,12 @@ from app.v1.services import financegy_service
 from app.v1.schemas.securities import SecurityOut
 from app.v1.schemas.trades import TradeOut
 from app.v1.schemas.sessions import SessionOut
+from app.v1.utils.adapters import (
+    adapt_trade_v1,
+    adapt_trade_list_v1,
+    adapt_session_v1,
+    adapt_session_list_v1,
+)
 from app.dependencies.search import get_search_query
 from app.dependencies.symbol import get_symbol
 from app.dependencies.year import get_year
@@ -55,7 +61,8 @@ def search_securities(request: Request, q: str = Depends(get_search_query)):
 )
 @limiter.limit("60/minute")
 def get_recent_trade(request: Request, symbol: str = Depends(get_symbol)):
-    return financegy_service.get_recent_trade(symbol)
+    payload = adapt_trade_v1(financegy_service.get_recent_trade(symbol))
+    return payload
 
 
 @router.get(
@@ -73,7 +80,8 @@ def get_trades_for_year(
     symbol: str = Depends(get_symbol),
     y: str = Depends(get_year),
 ):
-    return financegy_service.get_trades_for_year(symbol, y)
+    payload = adapt_trade_list_v1(financegy_service.get_trades_for_year(symbol, y))
+    return payload
 
 
 @router.get(
@@ -87,7 +95,8 @@ def get_trades_for_year(
 )
 @limiter.limit("30/minute")
 def get_security_recent_year(request: Request, symbol: str = Depends(get_symbol)):
-    return financegy_service.get_security_recent_year(symbol)
+    payload = adapt_trade_list_v1(financegy_service.get_security_recent_year(symbol))
+    return payload
 
 
 @router.get(
@@ -102,7 +111,10 @@ def get_security_session_trade(
     symbol: str = Depends(get_symbol),
     session: str = Depends(get_session_id),
 ):
-    return financegy_service.get_security_session_trade(symbol, session)
+    payload = adapt_session_v1(
+        financegy_service.get_security_session_trade(symbol, session)
+    )
+    return payload
 
 
 @router.get(
@@ -124,7 +136,11 @@ def get_historical_trades(
     symbol: str = Depends(get_symbol),
     dr: DateRange = Depends(get_date_range),
 ):
-    return financegy_service.get_historical_trades(symbol, dr.start, dr.end)
+
+    payload = adapt_trade_list_v1(
+        financegy_service.get_historical_trades(symbol, dr.start, dr.end)
+    )
+    return payload
 
 
 @router.get(
