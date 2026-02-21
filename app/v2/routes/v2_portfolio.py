@@ -75,5 +75,6 @@ def calculate_position_return_percent(
 def calculate_portfolio_summary(
     request: Request, portfolio: list[PortfolioPosition] = Depends(get_portfolio)
 ):
-    portfolio_summary = financegy_service.calculate_portfolio_summary(portfolio)
+    positions = [p.model_dump() for p in portfolio]
+    portfolio_summary = financegy_service.calculate_portfolio_summary(positions)
     return portfolio_summary
