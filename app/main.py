@@ -11,7 +11,14 @@ from slowapi.extension import _rate_limit_exceeded_handler
 
 from app.infra.limiter import limiter
 from .v1.routes import v1_securities, v1_sessions, v1_trades
-from .v2.routes import v2_securities, v2_sessions, v2_trades, v2_analytics, v2_portfolio
+from .v2.routes import (
+    v2_securities,
+    v2_sessions,
+    v2_trades,
+    v2_analytics,
+    v2_portfolio,
+    v2_market,
+)
 from .errors import DomainError, error_payload
 
 app = FastAPI(
@@ -131,5 +138,6 @@ v2.include_router(v2_sessions.router)
 v2.include_router(v2_trades.router)
 v2.include_router(v2_analytics.router)
 v2.include_router(v2_portfolio.router)
+v2.include_router(v2_market.router)
 
 app.include_router(v2)

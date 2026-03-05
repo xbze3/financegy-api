@@ -8,7 +8,7 @@ def get_portfolio(
     portfolio: List[PortfolioPosition] = Body(
         ...,
         description="List of portfolio positions",
-        example=[
+        examples=[
             {"symbol": "DTC", "shares": 100, "purchase_price": 300},
             {"symbol": "DDL", "shares": 50, "purchase_price": 250},
         ],

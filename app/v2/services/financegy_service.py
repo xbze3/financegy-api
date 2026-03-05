@@ -148,3 +148,13 @@ def calculate_position_return_percent(symbol: str, shares, purchase_price):
 def calculate_portfolio_summary(portfolio):
     portfolio_summary = financegy.calculate_portfolio_summary(portfolio)
     return portfolio_summary
+
+
+def get_market_snapshot():
+    market_snapshot = financegy.get_market_snapshot()
+    return market_snapshot
+
+
+def get_movers():
+    movers = financegy.get_movers()
+    return movers
