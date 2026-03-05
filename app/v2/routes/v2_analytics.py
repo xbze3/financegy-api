@@ -41,8 +41,11 @@ def get_price_change_percent(request: Request, symbol: str = Depends(get_symbol)
 def get_average_price(
     request: Request,
     symbol: str = Depends(get_symbol),
-    n: int = 30,
+    n: str = 30,
 ):
+    if n.isdigit():
+        n = int(n)
+
     return financegy_service.get_average_price(symbol, n)
 
 
