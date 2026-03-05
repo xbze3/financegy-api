@@ -64,3 +64,14 @@ def get_security_session_trade(
 def get_latest_session_for_symbol(request: Request, symbol: str = Depends(get_symbol)):
     latest_session = financegy_service.get_latest_session_for_symbol(symbol)
     return latest_session
+
+
+@router.get(
+    "/session/{session}/date",
+    response_model=str,
+    summary="Get specified session date.",
+    description="Returns the date for a specified trading session.",
+)
+@limiter.limit("60/minute")
+def get_session_date(request: Request, session: str = Depends(get_session_id)):
+    return financegy_service.get_session_date(session)

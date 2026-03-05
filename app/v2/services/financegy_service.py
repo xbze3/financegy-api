@@ -158,3 +158,8 @@ def get_market_snapshot():
 def get_movers():
     movers = financegy.get_movers()
     return movers
+
+
+def get_session_date(session: str):
+    session_date = financegy.get_session_date(session)
+    return session_date
