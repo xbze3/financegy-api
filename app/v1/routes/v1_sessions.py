@@ -23,7 +23,11 @@ router = APIRouter(
 )
 @limiter.limit("30/minute")
 def get_session_trades(request: Request, session: str = Depends(get_session_id)):
-    return financegy_service.get_session_trades(session)
+    payload = [
+        adapt_session_v1(trade)
+        for trade in financegy_service.get_session_trades(session)
+    ]
+    return payload
 
 
 @router.get(
