@@ -140,3 +140,8 @@ def test_get_historical_trades_v2():
 def test_get_security_full_history():
     response = client.get("/v2/securities/BDH/trades/full-history")
     assert response.status_code == 200
+
+
+def test_get_security_traded_years():
+    response = client.get("/v2/securities/DDL/traded-years")
+    assert response.status_code == 200

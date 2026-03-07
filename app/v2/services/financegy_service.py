@@ -163,3 +163,8 @@ def get_movers():
 def get_session_date(session: str):
     session_date = financegy.get_session_date(session)
     return session_date
+
+
+def get_traded_years(symbol: str):
+    traded_years = financegy.get_traded_years(symbol)
+    return traded_years

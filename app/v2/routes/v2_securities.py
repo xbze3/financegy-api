@@ -57,3 +57,15 @@ def search_securities(request: Request, q: str = Depends(get_search_query)):
 def get_security_by_symbol(request: Request, symbol: str = Depends(get_symbol)):
     security_name = financegy_service.get_security_by_symbol(symbol)
     return SecurityOut(symbol=symbol, name=security_name)
+
+
+@router.get(
+    "/securities/{symbol}/traded-years",
+    summary="Get traded years for a security",
+    description="Returns all years in which the specified security has recorded trades.",
+    response_model=list[str],
+)
+@limiter.limit("30/minute")
+def get_security_traded_years(request: Request, symbol: str = Depends(get_symbol)):
+    traded_years = financegy_service.get_traded_years(symbol)
+    return traded_years
