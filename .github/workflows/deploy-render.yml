@@ -24,7 +24,7 @@ jobs:
               id: deployment
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  environment: production
+                  environment: Production
 
             - name: Update Deployment Status
               uses: chrnorm/deployment-status@v2
