@@ -6,6 +6,7 @@ from app.v2.schemas.sessions import SessionOut
 from app.v2.schemas.trades import TradeOut
 from app.dependencies.symbol import get_symbol
 from app.dependencies.session import get_session_id
+from app.dependencies.year import get_year_path
 
 router = APIRouter(
     tags=["Sessions V2"],
@@ -75,3 +76,14 @@ def get_latest_session_for_symbol(request: Request, symbol: str = Depends(get_sy
 @limiter.limit("60/minute")
 def get_session_date(request: Request, session: str = Depends(get_session_id)):
     return financegy_service.get_session_date(session)
+
+
+@router.get(
+    "/sessions/year/{year}",
+    summary="Get trading sessions for a specific year",
+    description="Returns all trading sessions that occurred within the specified year along with their session dates.",
+    response_model=dict,
+)
+@limiter.limit("20/minute")
+def get_year_sessions(request: Request, year: int = Depends(get_year_path)):
+    return financegy_service.get_year_sessions(year)

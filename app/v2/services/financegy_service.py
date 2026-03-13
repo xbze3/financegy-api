@@ -168,3 +168,8 @@ def get_session_date(session: str):
 def get_traded_years(symbol: str):
     traded_years = financegy.get_traded_years(symbol)
     return traded_years
+
+
+def get_year_sessions(year: str):
+    year_sessions = financegy.get_year_sessions(year)
+    return year_sessions

@@ -145,3 +145,8 @@ def test_get_security_full_history():
 def test_get_security_traded_years():
     response = client.get("/v2/securities/DDL/traded-years")
     assert response.status_code == 200
+
+
+def test_get_year_sessions():
+    response = client.get("/v2/sessions/year/2026")
+    assert response.status_code == 200
