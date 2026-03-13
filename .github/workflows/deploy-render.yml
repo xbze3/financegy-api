@@ -2,14 +2,30 @@ name: Deploy to Render
 
 on:
     push:
-        branches:
-            - main
+        branches: [main]
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
-        environment: production
+        environment: Production
 
         steps:
-            - name: Trigger Render Deploy
-              run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
+            - uses: actions/checkout@v4
+
+            - name: Trigger Render deploy
+              run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+            - name: Create GitHub Deployment
+              uses: chrnorm/deployment-action@v2
+              id: deployment
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  environment: production
+
+            - name: Update Deployment Status
+              uses: chrnorm/deployment-status@v2
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+                  state: success
+                  environment-url: https://your-render-app.onrender.com
