@@ -32,4 +32,4 @@ jobs:
                   token: ${{ secrets.GITHUB_TOKEN }}
                   deployment-id: ${{ steps.deployment.outputs.deployment_id }}
                   state: success
-                  environment-url: https://your-app.onrender.com
+                  environment-url: https://financegy-api.onrender.com/
