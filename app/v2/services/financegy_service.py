@@ -173,3 +173,8 @@ def get_traded_years(symbol: str):
 def get_year_sessions(year: str):
     year_sessions = financegy.get_year_sessions(year)
     return year_sessions
+
+
+def get_year_sessions_snapshot(year: str):
+    year_sessions_snapshot = financegy.get_year_sessions_snapshot(year)
+    return year_sessions_snapshot

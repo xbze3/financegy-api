@@ -87,3 +87,18 @@ def get_session_date(request: Request, session: str = Depends(get_session_id)):
 @limiter.limit("20/minute")
 def get_year_sessions(request: Request, year: int = Depends(get_year_path)):
     return financegy_service.get_year_sessions(year)
+
+
+@router.get(
+    "/sessions/year/{year}/snapshot",
+    summary="Get yearly trading sessions snapshot",
+    description=(
+        "Returns an aggregated snapshot of all trading sessions for a given year. "
+        "This includes consolidated market data such as session summaries, price movements, "
+        "and activity across all listed securities for each session in the selected year."
+    ),
+    response_model=dict,
+)
+@limiter.limit("15/minute")
+def get_year_sessions_snapshot(request: Request, year: int = Depends(get_year_path)):
+    return financegy_service.get_year_sessions_snapshot(year)
