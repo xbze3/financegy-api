@@ -150,3 +150,8 @@ def test_get_security_traded_years():
 def test_get_year_sessions():
     response = client.get("/v2/sessions/year/2026")
     assert response.status_code == 200
+
+
+def test_get_year_sessions_snapshot():
+    response = client.get("/v2/sessions/year/2026/snapshot")
+    assert response.status_code == 200
