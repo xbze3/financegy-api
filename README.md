@@ -10,11 +10,11 @@ This API is powered by **[FinanceGY](https://pypi.org/project/financegy/)**, an 
 
 The API is publicly deployed and accessible at:
 
-**Base URL:** [ https://financegy-api.onrender.com/ ]
+**Base URL:** [ https://api.financegy.app/ ]
 
-**Interactive API Documentation:** [ https://financegy-api.onrender.com/docs ]
+**Interactive API Documentation:** [ https://api.financegy.app/docs ]
 
-**OpenAPI Specification:** [ https://financegy-api.onrender.com/v1/openapi.json ]
+**OpenAPI Specification:** [ https://api.financegy.app/v1/openapi.json ]
 
 This live deployment allows developers, applications, and dashboards to
 access Guyana Stock Exchange data programmatically without needing to
