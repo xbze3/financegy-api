@@ -197,5 +197,5 @@ This API uses **SlowAPI** to protect endpoints from abuse.
 - [x] Centralized error handling
 - [x] Rate limiting
 - [x] Docker support
-
+- [x] Cloud deployment (Render)
 - [ ] API-level caching (Redis)

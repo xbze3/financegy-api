@@ -69,3 +69,16 @@ def get_security_by_symbol(request: Request, symbol: str = Depends(get_symbol)):
 def get_security_traded_years(request: Request, symbol: str = Depends(get_symbol)):
     traded_years = financegy_service.get_traded_years(symbol)
     return traded_years
+
+
+@router.get(
+    "/securities/{symbol}/52-week-range",
+    summary="Get 52-week price range for a security",
+    description="Returns the lowest and highest traded prices for the specified security over the trailing 52 weeks.",
+)
+@limiter.limit("30/minute")
+def get_security_52_week_range(
+    request: Request,
+    symbol: str = Depends(get_symbol),
+):
+    return financegy_service.get_52_week_range(symbol)

@@ -165,6 +165,11 @@ def get_session_date(session: str):
     return session_date
 
 
+def get_52_week_range(symbol: str):
+    high_and_low = financegy.get_52_week_range(symbol)
+    return high_and_low
+
+
 def get_traded_years(symbol: str):
     traded_years = financegy.get_traded_years(symbol)
     return traded_years
